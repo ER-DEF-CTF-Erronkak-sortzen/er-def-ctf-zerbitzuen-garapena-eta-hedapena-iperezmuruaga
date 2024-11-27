@@ -1,15 +1,15 @@
 FROM ubuntu:latest
 
-RUN apt-get update && apt-get install -y apache2 && apt-get clean
-
-# Copy capture.py into the container
-COPY capture.py /usr/local/apache2/htdocs/
+RUN apt update && apt install -y apache2
 
 # Add a script to list directory contents
-RUN echo '<html><body><h1>Directory </h1><ul>' > /var/www/html/index.html && \
-    ls -1 /usr/local/apache2/htdocs | while read file; do echo "<li><a href=\"$file\">$file</a></li>"; done >> /var/www/htmlindex.html && \
-    echo '</ul></body></html>' >> //var/www/html/index.html && \
-    /etc/init.d/apache2 start
+RUN mkdir /var/www/html/captures
+
+# Copy index.html into the container
+COPY index.html /var/www/html/
+
+# Copy capture.py into the container
+COPY capture.py /var/www/html/
 
 # Run capture.py
-ENTRYPOINT ["sh", "-c", "python /usr/local/apache2/htdocs/capture.py"]
+ENTRYPOINT ["sh", "-c", "python /var/www/html/capture.py"]
