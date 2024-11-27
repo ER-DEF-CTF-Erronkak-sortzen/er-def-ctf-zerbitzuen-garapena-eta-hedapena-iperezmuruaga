@@ -1,7 +1,6 @@
 import os
 import time
 from datetime import datetime
-from scapy.all import sniff, wrpcap
 
 def capture_packets(interface, duration, output_dir):
     while True:
