@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt update && apt install -y apache2
+RUN apt update && apt install -y apache2 python3 tcpdump   
 
 # Add a script to list directory contents
 RUN mkdir /var/www/html/captures
@@ -11,5 +11,5 @@ COPY index.html /var/www/html/
 # Copy capture.py into the container
 COPY capture.py /var/www/html/
 
-# Run capture.py
-ENTRYPOINT ["sh", "-c", "python /var/www/html/capture.py"]
+ENTRYPOINT service apache2 start && python3 /var/www/html/capture.py
+

@@ -9,8 +9,8 @@ def capture_packets(interface, duration, output_dir):
         os.system(f"tcpdump -i {interface} -G {duration} -W 1 -w {pcap_file}")
 
 if __name__ == "__main__":
-    INTERFACE = "eno1"
+    INTERFACE = "eth0"  # Interface to capture packets
     DURATION = 60  # Capture duration in seconds
-    OUTPUT_DIR = "/home/xza/Downloads"
+    OUTPUT_DIR = "/var/www/html/captures"  # Directory to store the
 
     capture_packets(INTERFACE, DURATION, OUTPUT_DIR)

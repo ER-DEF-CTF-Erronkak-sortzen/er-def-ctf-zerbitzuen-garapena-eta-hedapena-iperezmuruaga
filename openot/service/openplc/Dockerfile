@@ -1,7 +1,7 @@
 FROM debian:bullseye-20240722
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt update && apt install -y \
     build-essential \
     libsqlite3-dev \
     wget \

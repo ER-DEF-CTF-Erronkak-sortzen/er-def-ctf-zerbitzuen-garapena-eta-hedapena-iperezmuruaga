@@ -2,7 +2,7 @@
 FROM ubuntu:latest
 
 # Install OpenSSH server
-RUN apt-get update && apt-get install -y openssh-server
+RUN apt update && apt install -y openssh-server tcpdump
 
 # Create the SSH directory and set up the root password
 RUN mkdir /var/run/sshd && echo 'root:rootpassword' | chpasswd
