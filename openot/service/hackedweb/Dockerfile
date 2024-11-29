@@ -12,4 +12,12 @@ COPY index.html /var/www/html/
 COPY capture.py /var/www/html/
 
 ENTRYPOINT service apache2 start && python3 /var/www/html/capture.py
+RUN apt install git
+RUN git clone https://github.com/pymodbus-dev/pymodbus
+RUN cd pymodbus
+RUN sudo python3 -m venv .venv
+RUN source .venv/bin/actívate
+
+RUN python3 HoldingRegisters.py
+
 
