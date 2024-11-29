@@ -1,6 +1,8 @@
 from pymodbus.client import ModbusTcpClient
 
-# Configuración del cliente Modbus
+
+
+    # Configuración del cliente Modbus
 client = ModbusTcpClient('127.0.0.1', port=502)
 
 def leer_holding_registers(direccion, cantidad):
@@ -22,9 +24,11 @@ if __name__ == "__main__":
     client.connect()
 
     # Leer registros holding desde la dirección 0x00 (16 registros)
-    registros = leer_holding_registers(1024, 16)
-    if registros:
-        print(f"Registros leídos: {registros}")
+    i = 1
+    while i > 0:
+        registros = leer_holding_registers(1024, 16)
+        if registros:
+            print(f"Registros leídos: {registros}")
 
     # Escribir un valor en un registro holding en la dirección 0x10
     #escribir_holding_register(0x10, 42)
