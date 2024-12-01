@@ -3,7 +3,7 @@ from pymodbus.client import ModbusTcpClient
 
 
     # Configuración del cliente Modbus
-client = ModbusTcpClient('127.0.0.1', port=502)
+client = ModbusTcpClient('172.20.0.3', port=502)
 
 def leer_holding_registers(direccion, cantidad):
     lectura = client.read_holding_registers(1024,count=cantidad,slave=1)

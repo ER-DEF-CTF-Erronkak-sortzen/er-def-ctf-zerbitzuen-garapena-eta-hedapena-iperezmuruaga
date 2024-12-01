@@ -11,19 +11,14 @@ COPY index.html /var/www/html/
 # Copy capture.py into the container
 COPY capture.py /var/www/html/
 
-RUN cd home/ubuntu
+RUN cd /home/ubuntu
 RUN apt install git -y
 RUN git clone https://github.com/pymodbus-dev/pymodbus
 RUN cd pymodbus
 RUN apt install python3.12-venv -y
+
 # Copy HoldingRegisters.py into the container
-COPY HoldingRegisters.py /home/ubuntu/pymodbus/venv/bin
+#COPY HoldingRegisters.py /home/ubuntu/
 
-RUN cd /home/ubuntu/pymodbus/venv
-RUN cd bin
-RUN source /home/ubuntu/pymodbus/venv/bin/activate
 
-# RUN python3 HoldingRegisters.py
-#ENTRYPOINT ["/bin/bash", "-c", "source ./venv/bin/activate && exec bash"]
-
-ENTRYPOINT service apache2 start && python3 /var/www/html/capture.py & python3 /home/ubuntu/pymodbus/venv/bin/HoldingRegisters.py
+ENTRYPOINT service apache2 start && python3 /var/www/html/capture.py && python3 /home/ubuntu/pymodbus/HoldingRegisters.py
