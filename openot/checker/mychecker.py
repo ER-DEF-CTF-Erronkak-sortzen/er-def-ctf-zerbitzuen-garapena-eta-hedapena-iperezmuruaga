@@ -6,8 +6,10 @@ import http.client
 import socket
 import paramiko
 import hashlib
-PORT_WEB = 9797
+#PORT_WEB = 9797
 PORT_SSH = 8822
+PORT_HACKEDWEB = 8889
+PORT_OPENPLC = 8890
 def ssh_connect():
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -47,21 +49,20 @@ class MyChecker(checkerlib.BaseChecker):
 
     def check_service(self):
         # check if ports are open
-        if not self._check_port_web(self.ip, PORT_WEB) or not self._check_port_ssh(self.ip, PORT_SSH):
+        if not self._check_port_web(self.ip, PORT_HACKEDWEB) or not self._check_port_ssh(self.ip, PORT_SSH) or not self._check_port_web(self.ip, PORT_OPENPLC):
             return checkerlib.CheckResult.DOWN
         #else
         # check if server is Apache 2.4.50
-        if not self._check_apache_version():
-            return checkerlib.CheckResult.FAULTY
-        # check if dev1 user exists in pasapasa_ssh docker
-        if not self._check_ssh_user('dev1'):
-            return checkerlib.CheckResult.FAULTY
-        file_path_web = '/usr/local/apache2/htdocs/index.html'
-        # check if index.hmtl from pasapasa_web has been changed by comparing its hash with the hash of the original file
+        #if not self._check_apache_version():
+            #return checkerlib.CheckResult.FAULTY
+        
+        #file_path_web = '/usr/local/apache2/htdocs/index.html'/var/www/html/
+        file_path_web = '/var/www/html/index.html'
+        # check if index.hmtl from openot_hackedweb has been changed by comparing its hash with the hash of the original file
         if not self._check_web_integrity(file_path_web):
             return checkerlib.CheckResult.FAULTY            
         file_path_ssh = '/etc/ssh/sshd_config'
-        # check if /etc/sshd_config from pasapasa_ssh has been changed by comparing its hash with the hash of the original file
+        # check if /etc/sshd_config from openot_pasapasa_ssh has been changed by comparing its hash with the hash of the original file
         if not self._check_ssh_integrity(file_path_ssh):
             return checkerlib.CheckResult.FAULTY            
         return checkerlib.CheckResult.OK
@@ -78,27 +79,17 @@ class MyChecker(checkerlib.BaseChecker):
         if not flag_present:
             return checkerlib.CheckResult.FLAG_NOT_FOUND
         return checkerlib.CheckResult.OK
-        
-    @ssh_connect()
-    #Function to check if an user exists
-    def _check_ssh_user(self, username):
-        ssh_session = self.client
-        command = f"docker exec pasapasa_ssh_1 sh -c 'id {username}'"
-        stdin, stdout, stderr = ssh_session.exec_command(command)
-        if stderr.channel.recv_exit_status() != 0:
-            return False
-        return True
-      
+                  
     @ssh_connect()
     def _check_web_integrity(self, path):
         ssh_session = self.client
-        command = f"docker exec pasapasa_web_1 sh -c 'cat {path}'"
+        command = f"docker exec openot_hackedweb_1 sh -c 'cat {path}'"
         stdin, stdout, stderr = ssh_session.exec_command(command)
         if stderr.channel.recv_exit_status() != 0:
             return False
         
         output = stdout.read().decode().strip()
-        return hashlib.md5(output.encode()).hexdigest() == 'a4ed71eb4f7c89ff868088a62fe33036'
+        return hashlib.md5(output.encode()).hexdigest() == 'f4f79cccf2b936a9a04bbe8a82bc441a'
     
     @ssh_connect()
     def _check_ssh_integrity(self, path):

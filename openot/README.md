@@ -51,7 +51,7 @@ SSH docker which allows the .pcap sniffing between different dockers (HackedWeb 
      
 
 # Checker checks:
-- Ports to reach dockers are open (WEB:8889; SSH 8890)
+- Ports to reach dockers are open (WEB:8889; SSH 8822; OPEPLC:8890)
 - Port 502 is open in OpenPLC docker
 - Port 502 is open in HackedWeb
 - HoldingRegisters.py is not running in HackedWeb container
