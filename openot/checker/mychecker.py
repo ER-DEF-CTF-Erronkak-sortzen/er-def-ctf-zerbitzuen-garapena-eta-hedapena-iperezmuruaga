@@ -10,6 +10,8 @@ import hashlib
 PORT_SSH = 8822
 PORT_HACKEDWEB = 8889
 PORT_OPENPLC = 8890
+PORT_MODBUS = 502
+
 def ssh_connect():
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -49,7 +51,7 @@ class MyChecker(checkerlib.BaseChecker):
 
     def check_service(self):
         # check if ports are open
-        if not self._check_port_web(self.ip, PORT_HACKEDWEB) or not self._check_port_ssh(self.ip, PORT_SSH) or not self._check_port_web(self.ip, PORT_OPENPLC):
+        if not self._check_port_web(self.ip, PORT_HACKEDWEB) or not self._check_port_ssh(self.ip, PORT_SSH) or not self._check_port_web(self.ip, PORT_OPENPLC) or not self._check_port_ssh(self.ip.PORT_MODBUS):
             return checkerlib.CheckResult.DOWN
         #else
         # check if server is Apache 2.4.50
@@ -124,9 +126,13 @@ class MyChecker(checkerlib.BaseChecker):
         if stderr.channel.recv_exit_status() != 0:
             return False
 
+        #we check if the flag is the correct one
         output = stdout.read().decode().strip()
+        #if output == "2024113":
+            #return flag == output
+        
         return flag == output
-
+    
     def _check_port_web(self, ip, port):
         try:
             conn = http.client.HTTPConnection(ip, port, timeout=5)
