@@ -6,15 +6,15 @@ services:
             dockerfile: Dockerfile
         ports:
             - "8889:80"
-    # openplc:
-    #     build:
-    #         context: ./openplc
-    #         dockerfile: Dockerfile
-    #     ports:
-    #         - "8890:8080"
-    # ssh:
-    #     build:
-    #         context: ./ssh
-    #         dockerfile: Dockerfile
-    #     ports:
-    #         - "8822:22"
+    openplc:
+        build:
+            context: ./openplc
+            dockerfile: Dockerfile
+        ports:
+            - "8890:8080"
+    ssh:
+        build:
+            context: ./ssh
+            dockerfile: Dockerfile
+        ports:
+            - "8822:22"

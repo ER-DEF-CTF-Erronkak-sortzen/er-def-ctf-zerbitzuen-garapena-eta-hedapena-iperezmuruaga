@@ -108,7 +108,7 @@ class MyChecker(checkerlib.BaseChecker):
     # Private Funcs - Return False if error
     def _add_new_flag(self, ssh_session, flag):
         # Execute the file creation command in the container
-        command = f"docker exec pasapasa_ssh_1 sh -c 'echo {flag} >> /tmp/flag.txt'"
+        command = f"docker exec openot_ssh_1 sh -c 'echo {flag} >> /tmp/flag.txt'"
         stdin, stdout, stderr = ssh_session.exec_command(command)
 
         # Check if the command executed successfully
@@ -121,16 +121,14 @@ class MyChecker(checkerlib.BaseChecker):
     @ssh_connect()
     def _check_flag_present(self, flag):
         ssh_session = self.client
-        command = f"docker exec pasapasa_ssh_1 sh -c 'grep {flag} /tmp/flag.txt'"
+        command = f"docker exec openot_ssh_1 sh -c 'grep {flag} /tmp/flag.txt'"
         stdin, stdout, stderr = ssh_session.exec_command(command)
         if stderr.channel.recv_exit_status() != 0:
             return False
 
         #we check if the flag is the correct one
         output = stdout.read().decode().strip()
-        #if output == "2024113":
-            #return flag == output
-        
+       
         return flag == output
     
     def _check_port_web(self, ip, port):
@@ -161,7 +159,7 @@ class MyChecker(checkerlib.BaseChecker):
     @ssh_connect()
     def _check_apache_version(self):
         ssh_session = self.client
-        command = f"docker exec pasapasa_web_1 sh -c 'httpd -v | grep \"Apache/2.4.50\'"
+        command = f"docker exec openot_web_1 sh -c 'httpd -v | grep \"Apache/2.4.50\'"
         stdin, stdout, stderr = ssh_session.exec_command(command)
 
         if stdout:
