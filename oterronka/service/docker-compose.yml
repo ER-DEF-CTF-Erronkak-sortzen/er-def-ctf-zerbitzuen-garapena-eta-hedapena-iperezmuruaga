@@ -1,0 +1,26 @@
+version: '3'
+services:
+    web:
+        build:
+            context: ./web
+            dockerfile: Dockerfile
+        ports:
+            - "9797:80"
+    OpenPLCRuntime:
+        build:
+            context: ./OpenPLCRuntime
+            dockerfile: Dockerfile
+        ports:
+            - "8822:502"
+    OpenPLCWebBrowser:
+        build:
+            context: ./OpenPLCWebBrowser
+            dockerfile: Dockerfile
+        ports:
+            - "8080:8080"
+    PLCBezeroa:
+        build:
+            context: ./PLCBezeroa
+            dockerfile: Dockerfile
+        ports:
+            - "9090:90"
